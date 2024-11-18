@@ -79,7 +79,7 @@ class QuadtreeNode:
     Класс, отвечающий за узел квадродерева,
     который содержит секцию изображения и информацию о ней.
     """
-
+фыафываыфвафывафывафывафывафыва
     def __init__(self, image: Image, border_box: tuple[int],
                  depth: int) -> None:
         """

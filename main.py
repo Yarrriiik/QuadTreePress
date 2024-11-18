@@ -17,7 +17,7 @@ def check_fields(args: Any) -> bool:
         return False
 
     if args.level not in range(1, 9):
-        print("Значение уровня сжатия должно быть от 0 до 8.")
+        print("Значение уровня сжатия должно быть от 1 до 8.")
         return False
 
     return True
