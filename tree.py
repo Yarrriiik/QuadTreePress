@@ -28,7 +28,7 @@ class Point:
         :return: Результат сравнения
         """
         return self.x_coordinate == another.y_coordinate and \
-            self.y_coordinate == another.y_coordinate
+               self.y_coordinate == another.y_coordinate
 
     def __repr__(self) -> str:
         """
@@ -79,7 +79,7 @@ class QuadtreeNode:
     Класс, отвечающий за узел квадродерева,
     который содержит секцию изображения и информацию о ней.
     """
-фыафываыфвафывафывафывафывафыва
+
     def __init__(self, image: Image, border_box: tuple[int],
                  depth: int) -> None:
         """
@@ -91,12 +91,13 @@ class QuadtreeNode:
         """
         self.__border_box = border_box  # регион копирования
         self.__depth = depth
-        self.__childrens = None  # top left,top right,bottom left,bottom right
-        self.__is_leaf = False
+        self.__childrens = None  # дочерние узлы текущего узла, разбитие на квадранты
+        self.__is_leaf = False  # является ли листом дерева (больше не делится на узлы)
         self.node_points = []
-
+        # left_right координата по x узло
         left_right = self.__border_box[0] + (self.__border_box[2] -
                                              self.__border_box[0]) / 2
+        # top_bottom координата по y узла
         top_bottom = self.__border_box[1] + (self.__border_box[3] -
                                              self.__border_box[1]) / 2
 
@@ -135,7 +136,7 @@ class QuadtreeNode:
     @property
     def error(self) -> float:
         """
-        Возвращает значения ошибки.
+        Возвращает значения ошибки (точность расчета отклонения)
         :return: Значение ошибки.
         """
         return self.__error
@@ -143,7 +144,7 @@ class QuadtreeNode:
     @property
     def average_color(self) -> tuple[int, int, int]:
         """
-        Возвращает значения цвета
+        Возвращает значения цвета (средний цвет изображения)
         :return: Значение цвета.
         """
         return self.__average_color
@@ -196,7 +197,10 @@ class QuadtreeNode:
         """
 
         left, top, right, bottom = self.__border_box
-
+        #top_left - верхний левый блок
+        #top_rigth - верхний правый блок
+        #bottom_left - нижний левый блок
+        #bottom_right - нижний правый блок
         top_left = QuadtreeNode(image, (
             left, top, self.__node_center_point.x_coordinate,
             self.__node_center_point.y_coordinate),
@@ -252,8 +256,8 @@ class QuadtreeNode:
 
         self.node_points.append(point)
 
-    def find_node(self, point, search_list: list = None) ->list["QuadtreeNode",
-                                                                list]:
+    def find_node(self, point, search_list: list = None) -> list["QuadtreeNode",
+                                                                 list]:
         """
         Возвращает узел, содержащий точку и путь до узла.
         :param point: искомая точка
@@ -271,7 +275,7 @@ class QuadtreeNode:
                     point.y_coordinate < \
                     self.__node_center_point.y_coordinate:
                 if self.childrens[0] is not None:
-                    return self.childrens[0].find_node(point,search_list)
+                    return self.childrens[0].find_node(point, search_list)
 
             elif point.x_coordinate >= self.__node_center_point.x_coordinate \
                     and \
@@ -380,15 +384,14 @@ class QuadTree:
             node.is_leaf = True
             return None
 
-        node.split(image)
+        node.split(image) #разбили на 4
 
-        threads = []
+        #многопоточность - паралельное выполнение действий ниже
+        threads = []  # Список для хранения потоков
         for child in node.childrens:
-            thread = threading.Thread(target=self.__build_tree,
-                                      args=(image, child))
-
-            thread.start()
-            threads.append(thread)
+            thread = threading.Thread(target=self.__build_tree, args=(image, child))  # Создание потока
+            thread.start()  # Запуск потока
+            threads.append(thread)  # Добавление потока в список
 
         for process in threads:
             process.join()
@@ -410,7 +413,7 @@ class QuadTree:
         # рекурсивный поиск по квадродереву
         self.get_leaf_nodes_recursion(self.__root, depth, leaf_nodes)
 
-        return leaf_nodes
+        return leaf_nodes #писок узлов которые являются листьями
 
     def get_leaf_nodes_recursion(self, node: QuadtreeNode, depth: int,
                                  leaf_nodes: list) -> None:

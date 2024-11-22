@@ -76,7 +76,7 @@ def create_gif(gif: CreatorGifImages) -> None:
                        append_images=gif.frames[1:],
                        optimize=True,
                        duration=800,
-                       loop=1)
+                       loop=0)  # 1-один раз, либо 0-бесконечно, зависимость кол-ва зацикливания
 
     print("Gif-изображение было сохранено в директорию gif")
 
