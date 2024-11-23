@@ -2,7 +2,7 @@
 
 import argparse
 import os
-
+import time
 from typing import Union, Any
 from work_with_images import compression_start
 
@@ -46,7 +46,11 @@ def parse_args() -> Union[bool, str]:
 
     # Проверяем аргументы командной строки
     if check_fields(args):
+        start_time = time.time()
         compression_start(args.file, args.level, args.borders, args.gif)
+        end_time = time.time()
+        print(f"Время выполнения программы: {end_time - start_time:.2f} секунд")
+
     else:
         print("Переданы неверные аргументы.")
 

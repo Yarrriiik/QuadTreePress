@@ -386,16 +386,19 @@ class QuadTree:
 
         node.split(image) #разбили на 4
 
-
-        #многопоточность - паралельное выполнение действий ниже
-        threads = []  # Список для хранения потоков
+        # Однопоточный вызов
         for child in node.childrens:
-            thread = threading.Thread(target=self.__build_tree, args=(image, child))  # Создание потока
-            thread.start()  # Запуск потока
-            threads.append(thread)  # Добавление потока в список
+            self.__build_tree(image, child)
 
-        for process in threads:
-            process.join()
+        # #многопоточность - паралельное выполнение действий ниже
+        # threads = []  # Список для хранения потоков
+        # for child in node.childrens:
+        #     thread = threading.Thread(target=self.__build_tree, args=(image, child))  # Создание потока
+        #     thread.start()  # Запуск потока
+        #     threads.append(thread)  # Добавление потока в список
+        #
+        # for process in threads:
+        #     process.join()
 
         return None
 

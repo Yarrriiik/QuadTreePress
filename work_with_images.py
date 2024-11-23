@@ -136,8 +136,9 @@ def compression_start(file: str, level: int, borders: bool,
     if gif:
         gif = CreatorGifImages()
 
-        for value in range(MAX_DEPTH ,0,-1): #MAX_DEPTH+1
+        for value in range(MAX_DEPTH ,0,-1): #MAX_DEPTH+1   (1, level + 1)   (MAX_DEPTH ,0,-1)  MAX_DEPTH, level, -1
             new_img = create_image(quadtree, value, borders)
             add_img_to_gif(new_img, gif)
 
         create_gif(gif)
+
