@@ -62,4 +62,5 @@ def main():
 
 if __name__ == "__main__":
     main()
+    # Ниже пример использования
     #python main.py -f image.png -l 5 -b -g
